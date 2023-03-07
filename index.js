@@ -47,8 +47,8 @@ app.get('/tags', PostController.getLastTags);
 app.get('/posts', PostController.getAll);
 app.get('/posts/:id', PostController.getOne);
 app.delete('/posts/:id', checkAuth, PostController.remove);
-app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
-app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
+app.patch('/posts/:id', checkAuth, postCreateValidation, PostController.update);
+app.post('/posts', checkAuth, postCreateValidation, PostController.create);
 
 app.listen(4444, (err) => {
 	if (err) {
