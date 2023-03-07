@@ -30,6 +30,9 @@ const upload = multer({ storage });
 app.use(express.json()); // Перетворює req в формат json
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
+app.use((req, res) => {
+	res.send('Hello Test');
+})
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
