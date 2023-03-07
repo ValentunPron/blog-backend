@@ -31,7 +31,7 @@ app.use(express.json()); // Перетворює req в формат json
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
 app.use((req, res) => {
-	res.send('Hello Test');
+	console.log(res);
 })
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
