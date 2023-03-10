@@ -10,6 +10,7 @@ import { UserController, PostController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
+//process.env.MONGO_URL
 mongoose
 	.connect(process.env.MONGO_URL)
 	.then(() => console.log('DB ok'))
@@ -31,6 +32,11 @@ const upload = multer({ storage });
 app.use(express.json()); // Перетворює req в формат json]
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+})
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
