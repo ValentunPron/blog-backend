@@ -10,7 +10,7 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
 mongoose
-	.connect("mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority")
+	.connect(process.env.MONGO_URL)
 	.then(() => console.log('DB ok'))
 	.catch((err) => console.log('DB error', err))
 
@@ -27,7 +27,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.use(express.json()); // Перетворює req в формат json
+app.use(express.json()); // Перетворює req в формат json]
+app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
