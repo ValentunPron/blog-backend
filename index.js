@@ -17,6 +17,7 @@ mongoose
 	.catch((err) => console.log('DB error', err))
 
 const app = express(); 
+const cors = require('cors')
 
 const storage = multer.diskStorage({
 	destination: (_, __, cb) => {
@@ -32,16 +33,6 @@ const upload = multer({ storage });
 app.use(express.json()); // Перетворює req в формат json]
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader(
-	  "Access-Control-Allow-Methods",
-	  "GET, POST, PUT, DELETE, OPTIONS"
-	);
-	res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-	next();
-})
-
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
