@@ -6,7 +6,7 @@ export const getLastTags = async (req, res) => {
 		
 		const tags = posts.map(obj => obj.tags).flat().slice(0, 5)
 
-		res.json(posts);
+		res.json(tags);
 	} catch (error) {
 		res.status(500).json({
 			message: 'Не найдено тег'
