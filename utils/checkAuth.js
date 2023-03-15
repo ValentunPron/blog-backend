@@ -11,7 +11,7 @@ export default (req, res, next) => {
 			next();
 		} catch (error) {
 			res.status(403).json({
-				message: 'Немає доступа',
+				message: `Немає доступа ${error}`,
 			})
 		}
 	} else {
