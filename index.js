@@ -11,7 +11,6 @@ import { UserController, PostController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
-//process.env.MONGO_URL
 //'mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority'
 mongoose
 	.connect(process.env.MONGO_URL)
