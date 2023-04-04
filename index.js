@@ -13,7 +13,7 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 mongoose.set("strictQuery", false);
 //'mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority'
 mongoose
-	.connect(process.env.MONGO_URL)
+	.connect('mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority')
 	.then(() => console.log('DB ok'))
 	.catch((err) => console.log('DB error', err))
 
@@ -42,18 +42,12 @@ app.post('/auth/register', registerValidation, handleValidationErrors, UserContr
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/upload', upload.single('image'), (req, res) => {
-	const { file } = req.body;
-	const imageData = file.split(';base64,').pop();
+	res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+	res.set('Pragma', 'no-cache');
+	res.set('Expires', '0');
 
-	fs.writeFile(filename, imageData, { encoding: 'base64' }, (err) => {
-		if (err) {
-		  console.error(err);
-		  res.status(500).send('Error saving image to server');
-		} else {
-			res.json({
-				url: `/uploads/${req.file.originalname}`,
-			});
-		}
+	res.json({
+		url: `/uploads/${req.file.originalname}`,
 	});
 });
 
@@ -70,6 +64,5 @@ app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {
 		return console.log(err);
 	}
-
 	console.log('Server OK');
 });
