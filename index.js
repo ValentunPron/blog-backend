@@ -3,7 +3,7 @@ import fs from 'fs'
 import mongoose from 'mongoose';
 import multer from 'multer';
 import cors from 'cors';
-
+import cloudinary from 'cloudinary';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
 
@@ -11,7 +11,13 @@ import { UserController, PostController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
-//'mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority'
+
+cloudinary.config({
+	cloud_name: 'dztdyxx8f',
+	api_key: '333182238216234',
+	api_secret: 'gxLZDM-JQ54LSWqAjdfXe0weUFg'
+});
+
 //process.env.MONGO_URL
 mongoose
 	.connect(process.env.MONGO_URL)
@@ -29,6 +35,12 @@ const storage = multer.diskStorage({
 	}, 
 	filename: (_, file, cb) => {
 		cb(null, file.originalname)
+	},
+	cloudinary: cloudinary,
+	params: {
+	  folder: 'my_folder',
+	  use_filename: true,
+	  unique_filename: false,
 	},
 });
 
@@ -51,6 +63,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 		url: `/uploads/${req.file.originalname}`,
 	});
 });
+
 
 app.get('/tags', PostController.getLastTags);
 
