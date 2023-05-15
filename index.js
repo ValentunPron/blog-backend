@@ -18,9 +18,12 @@ cloudinary.config({
 	api_secret: 'gxLZDM-JQ54LSWqAjdfXe0weUFg'
 });
 
+
+  
+//'mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority'
 //process.env.MONGO_URL
 mongoose
-	.connect(process.env.MONGO_URL)
+	.connect('mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority')
 	.then(() => console.log('DB ok'))
 	.catch((err) => console.log('DB error', err))
 
@@ -78,5 +81,5 @@ app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {
 		return console.log(err);
 	}
-	console.log('Server Okey');
+	console.log('Server OK');
 });
