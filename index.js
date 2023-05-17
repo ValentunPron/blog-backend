@@ -3,22 +3,13 @@ import fs from 'fs'
 import mongoose from 'mongoose';
 import multer from 'multer';
 import cors from 'cors';
-import cloudinary from 'cloudinary';
 
-import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
+import { registerValidation, loginValidation, postCreateValidation, postCommentsValidation } from './validations.js';
 
 import { UserController, PostController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
-
-cloudinary.config({
-	cloud_name: 'dztdyxx8f',
-	api_key: '333182238216234',
-	api_secret: 'gxLZDM-JQ54LSWqAjdfXe0weUFg'
-});
-
-
   
 //'mongodb+srv://admin:admin123@cluster0.ovflhbn.mongodb.net/blog?retryWrites=true&w=majority'
 //process.env.MONGO_URL
@@ -39,7 +30,6 @@ const storage = multer.diskStorage({
 	filename: (_, file, cb) => {
 		cb(null, file.originalname)
 	},
-	cloudinary: cloudinary,
 	params: {
 	  folder: 'my_folder',
 	  use_filename: true,
@@ -76,6 +66,9 @@ app.get('/posts/tags', PostController.getLastTags);
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
+
+app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, PostController.comments);
+app.get('/posts/comments/:id', PostController.getComments);
 
 app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {

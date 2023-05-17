@@ -18,3 +18,7 @@ export const postCreateValidation = [
 	body('tags', 'Нарпавильний формат тегів').optional().isString(),
 	body('imageUrl', 'Неправильна силка на фотографію').optional().isString(),
 ];
+
+export const postCommentsValidation = [
+	body('comments', 'Введіть коментар статі').isLength({min: 3}).isString(),
+];
