@@ -70,7 +70,7 @@ app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, Post
 app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, CommentsController.comments);
 app.get('/posts/comments/:id', CommentsController.getComments);
 
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen('https://kep-blog-server.herokuapp.com/' || 4444, (err) => {
 	if (err) {
 		return console.log(err);
 	}
