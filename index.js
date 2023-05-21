@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import { registerValidation, loginValidation, postCreateValidation, postCommentsValidation } from './validations.js';
 
-import { UserController, PostController } from './controllers/index.js';
+import { UserController, PostController, CommentsController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
@@ -67,8 +67,8 @@ app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 
-app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, PostController.comments);
-app.get('/posts/comments/:id', PostController.getComments);
+app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, CommentsController.comments);
+app.get('/posts/comments/:id', CommentsController.getComments);
 
 app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {
