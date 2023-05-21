@@ -40,8 +40,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.json()); // Перетворює req в формат json]
-app.use('/uploads', express.static('uploads'));
 app.use(cors());
+app.use('/uploads', express.static('uploads'));
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
@@ -70,7 +70,7 @@ app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, Post
 app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, CommentsController.comments);
 app.get('/posts/comments/:id', CommentsController.getComments);
 
-app.listen('https://kep-blog-server.herokuapp.com/' || 4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {
 		return console.log(err);
 	}
