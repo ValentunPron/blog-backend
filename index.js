@@ -48,10 +48,7 @@ app.post('/auth/register', registerValidation, handleValidationErrors, UserContr
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/upload', upload.single('image'), (req, res) => {
-	res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-	res.set('Pragma', 'no-cache');
-	res.set('Expires', '0');
-
+	console.log(req.file.originalname);
 	res.json({
 		url: `/uploads/${req.file.originalname}`,
 	});
