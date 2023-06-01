@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import fs from 'fs'
 import mongoose from 'mongoose';
 import multer from 'multer';
@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import { registerValidation, loginValidation, postCreateValidation, postCommentsValidation } from './validations.js';
 
-import { UserController, PostController, CommentsController } from './controllers/index.js';
+import { UserController, PostController, ActiveController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set("strictQuery", false);
@@ -19,6 +19,7 @@ mongoose
 	.catch((err) => console.log('DB error', err))
 
 const app = express(); 
+const router = express.Router();
 
 const storage = multer.diskStorage({
 	destination: (_, __, cb) => {
@@ -64,8 +65,10 @@ app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 
-app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, CommentsController.comments);
-app.get('/posts/comments/:id', CommentsController.getComments);
+app.post('/posts/comments/:id', checkAuth, postCommentsValidation, handleValidationErrors, ActiveController.comments);
+app.get('/posts/comments/:id', ActiveController.getComments);
+
+app.post('/:postId/like', checkAuth, ActiveController.like)
 
 app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {
